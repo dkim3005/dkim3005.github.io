@@ -35,3 +35,9 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./_site
+
+      - name: Send KakaoTalk notification
+        run: |
+          curl -X POST https://kapi.kakao.com/v2/api/talk/memo/default/send \
+          -H "Authorization: Bearer ${{ secrets.KAKAO_ACCESS_TOKEN }}" \
+          -d "template_object={\"object_type\":\"text\",\"text\":\"배포가 완료되었습니다! 사이트가 이제 https://dkim3005.github.io/에서 확인 가능합니다.\",\"link\":{\"web_url\":\"https://dkim3005.github.io/\"}}"
