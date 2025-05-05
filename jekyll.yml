@@ -36,21 +36,8 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./_site
 
-      - name: Display Kakao Access Token (for debugging)
-        run: |
-          echo "Kakao Access Token: ${{ secrets.KAKAO_ACCESS_TOKEN }}"
-
       - name: Send KakaoTalk notification
-        uses: dkim3005/dkim3005.github.io@main
-        # if: failure()
-        with:
-          kakao_access_token: ${{ secrets.KAKAO_ACCESS_TOKEN }}
-          function_name: send_to_me_custom
-          template_id: "93112"
-          template_args: '{"title": "제목", "desc": "설명"}'
-
-#      - name: Send KakaoTalk notification with debug
-#        run: |
-#          curl -v -X POST https://kapi.kakao.com/v2/api/talk/memo/default/send \
-#          -H "Authorization: Bearer ${{ secrets.KAKAO_ACCESS_TOKEN }}" \
-#          -d "template_object={\"object_type\":\"text\",\"text\":\"배포가 완료되었습니다! 사이트가 이제 https://dkim3005.github.io/에서 확인 가능합니다.\",\"link\":{\"web_url\":\"https://dkim3005.github.io/\"}}"
+        run: |
+          curl -X POST https://kapi.kakao.com/v2/api/talk/memo/default/send \
+          -H "Authorization: Bearer ${{ secrets.KAKAO_ACCESS_TOKEN }}" \
+          -d "template_object={\"object_type\":\"text\",\"text\":\"배포가 완료되었습니다! 사이트가 이제 https://dkim3005.github.io/에서 확인 가능합니다.\",\"link\":{\"web_url\":\"https://dkim3005.github.io/\"}}"
