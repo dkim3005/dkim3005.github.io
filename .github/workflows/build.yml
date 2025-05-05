@@ -1,55 +1,55 @@
-name: build
-
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch: {}
-  repository_dispatch: {}
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-
-    - uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: '3.2'
-    - name: Setup cache for Bundler
-      id: cache
-      uses: actions/cache@v4
-      with:
-        path: |
-          docs/Gemfile.lock
-          docs/vendor/bundle
-        key: ${{ runner.os }}-bundler-${{ hashFiles('docs/Gemfile') }}
-        restore-keys: |
-          ${{ runner.os }}-bundler-
-
-    - name: Install - Bundler
-      env:
-        MAKE: make -j2
-      working-directory: docs/
-      run: |
-        bundle config set path vendor/bundle
-        bundle install --jobs=4 --retry=3
-        bundle clean
-
-    - name: Update Algolia index
-      working-directory: docs/
-      run: bundle exec jekyll algolia push
-      env:
-        ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
-      continue-on-error: true
-
-    - name: Send KakaoTalk notification
-      run: |
-        curl -v -X POST https://kapi.kakao.com/v2/api/talk/memo/default/send \
-        -H "Authorization: Bearer ${{ secrets.KAKAO_ACCESS_TOKEN }}" \
-        -d "template_object={\"object_type\":\"text\",\"text\":\"배포가 완료되었습니다! 사이트가 이제 https://dkim3005.github.io/에서 확인 가능합니다.\",\"link\":{\"web_url\":\"https://dkim3005.github.io/\"}}"
-        echo "Kakao Access Token: ${{ secrets.KAKAO_ACCESS_TOKEN }}"
-
-
+#name: build
+#
+#on:
+#  push:
+#    branches:
+#      - main
+#  workflow_dispatch: {}
+#  repository_dispatch: {}
+#
+#jobs:
+#  build:
+#    runs-on: ubuntu-latest
+#    steps:
+#    - uses: actions/checkout@v4
+#      with:
+#        fetch-depth: 0
+#
+#    - uses: ruby/setup-ruby@v1
+#      with:
+#        ruby-version: '3.2'
+#    - name: Setup cache for Bundler
+#      id: cache
+#      uses: actions/cache@v4
+#      with:
+#        path: |
+#          docs/Gemfile.lock
+#          docs/vendor/bundle
+#        key: ${{ runner.os }}-bundler-${{ hashFiles('docs/Gemfile') }}
+#        restore-keys: |
+#          ${{ runner.os }}-bundler-
+#
+#    - name: Install - Bundler
+#      env:
+#        MAKE: make -j2
+#      working-directory: docs/
+#      run: |
+#        bundle config set path vendor/bundle
+#        bundle install --jobs=4 --retry=3
+#        bundle clean
+#
+#    - name: Update Algolia index
+#      working-directory: docs/
+#      run: bundle exec jekyll algolia push
+#      env:
+#        ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+#      continue-on-error: true
+#
+#    - name: Send KakaoTalk notification
+#      run: |
+#        curl -v -X POST https://kapi.kakao.com/v2/api/talk/memo/default/send \
+#        -H "Authorization: Bearer ${{ secrets.KAKAO_ACCESS_TOKEN }}" \
+#        -d "template_object={\"object_type\":\"text\",\"text\":\"배포가 완료되었습니다! 사이트가 이제 https://dkim3005.github.io/ 에서 확인 가능합니다.\",\"link\":{\"web_url\":\"https://dkim3005.github.io/\"}}"
+#        echo "Kakao Access Token: ${{ secrets.KAKAO_ACCESS_TOKEN }}"
+#
+#
