@@ -4,9 +4,15 @@ layout: archive
 
 {{ content }}
 
----
-layout: archive
----
+
+<!-- Other Resources Section -->
+<h2>Other Resources</h2>
+<ul>
+    <li><a href="https://github.com/dkim3005/ai-lab" target="_blank">AI Lab</a></li>
+    <li><a href="https://github.com/dkim3005/blog" target="_blank">Blog</a></li>
+    <li><a href="https://github.com/dkim3005/portfolio" target="_blank">Portfolio</a></li>
+    <li><a href="https://github.com/dkim3005/resume-site" target="_blank">Resume Site</a></li>
+</ul>
 
 {{ content }}
 
@@ -17,23 +23,6 @@ layout: archive
 {% else %}
   {% assign posts = site.posts %}
 {% endif %}
-
-{% assign entries_layout = page.entries_layout | default: 'list' %}
-<div class="entries-{{ entries_layout }}">
-  {% include documents-collection.html entries=posts type=entries_layout %}
-</div>
-
-{% include paginator.html %}
-
-<!-- Add Other Resources Section -->
-<h2>Other Resources</h2>
-<ul>
-    <li><a href="https://github.com/dkim3005/ai-lab" target="_blank">AI Lab</a></li>
-    <li><a href="https://github.com/dkim3005/blog" target="_blank">Blog</a></li>
-    <li><a href="https://github.com/dkim3005/portfolio" target="_blank">Portfolio</a></li>
-    <li><a href="https://github.com/dkim3005/resume-site" target="_blank">Resume Site</a></li>
-</ul>
-
 
 
 <!--<h3 class="archive__subtitle">{{ site.data.ui-text[site.locale].recent_posts | default: "Recent Posts" }}</h3>-->
