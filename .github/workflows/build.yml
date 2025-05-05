@@ -3,7 +3,7 @@ name: build
 on:
   push:
     branches:
-      - master
+      - main
   workflow_dispatch: {}
   repository_dispatch: {}
 
@@ -45,7 +45,6 @@ jobs:
       env:
         ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
       continue-on-error: true
-
 
     - name: Send KakaoTalk notification
       run: |
